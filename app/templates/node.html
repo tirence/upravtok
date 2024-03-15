@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<header class="header-wrapper">
+</header>
+
+<main class="body-wrapper">
+    <h2 class="title">Add Node</h2>
+    <div class="container">
+        <form class="form" action="{{ url_for('add_node', user_id=user_id) }}" method="POST">
+            <div class="input-wrapper">
+                <!-- <input type="hidden" name="username" value="{{ username }}"> -->
+                <label for="type_name">Type/Name:</label>
+                <input type="text" id="type_name" name="type_name" required><br><br>
+            </div>
+            <div class="input-wrapper">
+                <label for="priority">Priority:</label>
+                <select class="field" id="priority" name="priority" required>
+                    <option value="high">High</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                </select><br><br>
+            </div>
+            <div class="input-wrapper">
+                <label for="status">Status:</label>
+                <select class="field" id="status" name="status" required>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select><br><br>
+            </div>
+            <div class="input-wrapper">
+                <label for="consumption">Consumption:</label>
+                <input type="number" id="consumption" name="consumption" required><br><br>
+            </div>
+            <div class="button-wrapper">
+                <button class="button" type="submit"><p class="button-text">Add node</p></button>
+            </div>
+        </form>
+    </div>
+</main>
+
+<footer class="footer-wrapper">
+</footer>
+{% endblock %}

@@ -44,15 +44,27 @@ body {
     border-radius: 20px;
     border: none;
     outline: none;
-    padding: 10px;
+    /* padding: 10px; */
     font-size: 16px;
     background-color: var(--button-background);
     transition: background-color 0.3s ease;
+    text-align: center;
 }
 
 .input-wrapper input:focus {
     background-color: white;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.field {
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    /* padding: 10px; */
+    font-size: 16px;
+    background-color: var(--button-background);
+    transition: background-color 0.3s ease;
+    text-align: center;
 }
 
 .title {
