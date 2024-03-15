@@ -1,1 +1,1 @@
-lsx", sheet_n
+elektromer1.tick()

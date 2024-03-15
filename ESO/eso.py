@@ -10,15 +10,16 @@ class eso:
     def send_prices(prices, date):
         
 
-        df = pd.read_excel(prices, sheet_name='Sheet3')
+        #df = pd.read_excel(prices, sheet_name='Sheet3')
         #df=pd.DataFrame(df)
         #print(df)
         #
-        column_list = df[date].tolist()
+        #column_list = df[date].tolist()
 
         
         #df = pd.read_csv('file_name_here.csv')
-        print(df)
+        #print(df)
+        pass
     def send_grid_status(consumption):
         pass
 
