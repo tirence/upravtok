@@ -1,3 +1,6 @@
+import ast
+import json
+from bson import ObjectId
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
@@ -26,10 +29,6 @@ except Exception as e:
     print(e)
 
 @app.route("/")
-@app.route("/user")
-def user_view():
-    return "Hello, Flask!"
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -40,7 +39,7 @@ def register():
         if users_collection.find_one({'username': username}):
             flash('Username already exists. Choose a different one.', 'danger')
         else:
-            users_collection.insert_one({'username': username, 'password': password})
+            users_collection.insert_one({'username': username, 'password': password, 'nodes' : 0})
             flash('Registration successful. You can now log in.', 'success')
             return redirect(url_for('login'))
 
@@ -58,7 +57,7 @@ def login():
         user = users_collection.find_one({'username': username, 'password': password})
         if user:
             flash('Login successful.', 'success')
-            return redirect(url_for('user_view'))
+            return redirect(url_for('user_view', user_id=user["_id"]))
             # Add any additional logic, such as session management
         else:
             flash('Invalid username or password. Please try again.', 'danger')
@@ -67,6 +66,18 @@ def login():
     else:
         # Render the login form for GET requests
         return render_template('login.html')
+
+@app.route("/user")
+def user_view():
+    print(request.args['user_id'])
+    user = users_collection.find_one({"_id" : ObjectId(str(request.args['user_id']))})
+   
+    if user:
+        return render_template('user.html', name=user["username"], n=user["nodes"])
+
+@app.route("/user/configure")
+def user_configure():
+    return "hah"
 
 def fetch_data_by_date_time(date_str, time):
     # Convert date string to datetime object

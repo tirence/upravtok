@@ -1,7 +1,7 @@
 :root {
     --black: #202022;
     --light-green: #08424f;
-    --blue: #a4e4f0;
+    --blue: #b5d3da;
     --yellow: #f0deb0;
     --orange: #ed9e35;
     --brown: #5d3c2c;
@@ -64,6 +64,15 @@ body {
     line-height: 50px;
 }
 
+.text {
+    font-size: 20px;
+    font-family: 'Comic Neue', cursive;
+    color: var(--light-green);
+    margin: 10px auto 5px;
+    text-align: center;
+    line-height: 50px;
+}
+
 
 .body-wrapper {
     display: flex;
@@ -118,6 +127,7 @@ body {
 .button-wrapper {
     position: relative;
     display: flex;
+    margin: auto;
     max-width: 380px;
     width: 100%;
 }

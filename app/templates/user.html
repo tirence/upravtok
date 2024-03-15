@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<header class="header-wrapper">
+</header>
+
+<main class="body-wrapper text">
+	<h2 class="title">Hello, {{ name }}!</h2>
+
+	<div class="container">
+		{% if n < 1 %} <p class="text">You have not configured any smart nodes yet.</p>
+			{% for i in range(n) %}
+			<div class="form">
+				<h3>Node {{ i + 1 }}</h3>
+				<p><strong>Type/Name:</strong> {{ node_data[i]['type_name'] }}</p>
+				<p><strong>Priority:</strong> {{ node_data[i]['priority'] }}</p>
+				<p><strong>Status:</strong> {{ node_data[i]['status'] }}</p>
+				<p><strong>Consumption:</strong> {{ node_data[i]['consumption'] }}</p>
+			</div>
+			{% endfor %}
+			{% endif %}
+	</div>
+
+
+	<form class="button-wrapper" action="{{ url_for('user_configure') }}" method="GET">
+		<button type="submit" class="button">
+			<p class="button-text">Configure</p>
+		</button>
+	</form>
+
+</main>
+
+<footer class="footer-wrapper">
+</footer>
+{% endblock %}
