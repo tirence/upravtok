@@ -1,21 +1,42 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-  <h2>Register</h2>
-  {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      <ul class="messages">
-        {% for message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-  {% endwith %}
-  <form method="post" action="{{ url_for('register') }}">
-    <label for="username">Username:</label>
-    <input type="text" name="username" required>
-    <label for="password">Password:</label>
-    <input type="password" name="password" required>
-    <button type="submit">Register</button>
-  </form>
+<header class="header-wrapper">
+</header>
+
+<main class="body-wrapper text">
+    <h2 class="title">Register</h2>
+
+    <!-- {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        {% endwith %} -->
+
+    <div class="container">
+        <form class="form" method="post" action="{{ url_for('register') }}">
+            <div class="input-wrapper">
+                <label for="username">Username:</label>
+                <input type="text" id="email" name="username" required>
+            </div>
+
+            <div class="input-wrapper">    
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            <div class="button-wrapper">
+                <button class="button" type="submit" name="action"><p class="button-text">Register</p></button>
+            </div>
+        </form>
+
+    </div>
+</main>
+
+<footer class="footer-wrapper">
+</footer>
 {% endblock %}

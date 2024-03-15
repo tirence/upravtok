@@ -1,21 +1,41 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-  <h2>Login</h2>
-  {% with messages = get_flashed_messages() %}
+
+<header class="header-wrapper">
+</header>
+
+<main class="body-wrapper text">
+    <h2 class="title">Login</h2>
+
+    <!-- {% with messages = get_flashed_messages() %}
     {% if messages %}
-      <ul class="messages">
+    <ul class="messages">
         {% for message in messages %}
-          <li>{{ message }}</li>
+        <li>{{ message }}</li>
         {% endfor %}
-      </ul>
+    </ul>
     {% endif %}
-  {% endwith %}
-  <form method="post" action="{{ url_for('login') }}">
-    <label for="username">Username:</label>
-    <input type="text" name="username" required>
-    <label for="password">Password:</label>
-    <input type="password" name="password" required>
-    <button type="submit">Login</button>
-  </form>
-{% endblock %}
+    {% endwith %} -->
+
+    <div class="container">
+        <form class="form" method="post" action="{{ url_for('login') }}">
+            <div class="input-wrapper">
+                <label for="username">Username:</label>
+                <input type="text" id="email" name="username" required>
+            </div>
+
+            <div class="input-wrapper">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <button class="button" type="submit" name="action">
+                <p class="button-text">Login</p>
+            </button>
+        </form>
+
+    </div>
+
+
+    {% endblock %}
