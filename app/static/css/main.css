@@ -82,7 +82,7 @@ body {
     color: var(--light-green);
     margin: 10px auto 5px;
     text-align: center;
-    line-height: 50px;
+    line-height: 20px;
 }
 
 
@@ -148,6 +148,7 @@ body {
     text-align: center;
     width: 100%;
     max-width: 380px;
+    padding-bottom: 20px;
 }
 
 .container {

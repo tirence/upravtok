@@ -98,7 +98,7 @@ def add_node(user_id):
         if user:
             # Add the node data to the user's 'nodes' array
             users_collection.update_one({"_id" : ObjectId(str(user_id))},{'$push': {'nodes': node_data}, '$inc': {'node_count': 1}})
-            # user = users_collection.find_one({"_id" : ObjectId(str(user_id))})
+            user = users_collection.find_one({"_id" : ObjectId(str(user_id))})
             print(user["node_count"])
             
         return render_template('user.html', user_id=user["_id"], name=user["username"], n=user["node_count"], node_data=user["nodes"])
