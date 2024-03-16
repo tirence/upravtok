@@ -1,4 +1,4 @@
-# upravtok
+# Smartifying the electric grid (upravtok)
 A project for HackTuesX
 
 **Проблем, който текущият проект цели да разреши:**
