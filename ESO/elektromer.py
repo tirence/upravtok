@@ -53,7 +53,7 @@ class elektromer:
                 self.calculate_power_budget()
         
         if(self.prev_grid_state>self.grid_state):
-            print("Grid state got better!")
+            #print("Grid state got better!")
             for p in range(1,9):
                 if(self.consumer_needs<self.power_budget):
                     for i in self.consumers:
@@ -67,7 +67,7 @@ class elektromer:
         self.prev_grid_state=self.grid_state
 
         
-        print("After Decision: " + str(self.consumers))
+        #print("After Decision: " + str(self.consumers))
     def tick(self):
         self.grid_state_adjust()
         self.calculate_power_budget()
@@ -80,34 +80,83 @@ class elektromer:
 
         data=str(consumers[0][2]) + str(consumers[1][2]) + str(consumers[2][2]) + str(consumers[3][2])
 
-        print("Data to send:" + str(data))
+        #print("Data to send:" + str(data))
 
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.connect((HOST, PORT))
             s.sendall(data.encode("ascii"))
-            print(f"Sent string")
+            #print(f"Sent string")
             #data = s.recv(1024)
 
         #print(f"Received {data!r}")
 
 
 if __name__ == "__main__":
-    consumers=[[1000,2,1,1,"Prahosmuka4ka"],[5000, 5, 1, 1, "Kalorifer"],[3200, 3, 1, 1, "Klimatik"],[500, 1, 1, 1, "Small electronics" ]]#consumers is [[wattage,priority,state_on_off,state_on_off_intent, name]
+
+    consumers=[[1000,2,1,1,"Vacuum"],[5000, 5, 1, 1, "Heater"],[3200, 3, 1, 1, "AC"],[500, 1, 1, 1, "Small electronics" ]]#consumers is [[wattage,priority,state_on_off,state_on_off_intent, name]
     sources=[15000]#just power grid
     
+
+
     elektromer1 = elektromer(20,20,sources, consumers)
-    elektromer1.grid_state="C"
-    elektromer1.tick()
-    time.sleep(1)
-    elektromer1.grid_state="C"
+    print("_________________________________________")
+    print("Beginning")
+    print("_________________________________________")
+    print('\n\n')
+    print("Active consumers:")
+    for i in consumers:
+        if(i[2]):
+            print(str(i[4]) + " " + str(i[0]) + "W")
+    elektromer1.grid_state="A"
+
+    print('\n\n')
+
     #elektromer1 = elektromer(20,20,sources, consumers, grid_state)
     elektromer1.tick()
 
 
+    print("Active consumers:")
+    for i in consumers:
+        if(i[2]):
+            print(str(i[4]) + " " + str(i[0]) + "W")
+
+    elektromer1.grid_state="F"
+
+    print('\n\n')
+    elektromer1.tick()
+    time.sleep(5)
+
+
+    print("Active consumers:")
+    for i in consumers:
+        if(i[2]):
+            print(str(i[4]) + " " + str(i[0]) + "W")
+    elektromer1.grid_state="D"
+
+    print('\n\n')
+    elektromer1.tick()
+    time.sleep(5)
+
+
+    print("Active consumers:")
+    for i in consumers:
+        if(i[2]):
+            print(str(i[4]) + " " + str(i[0]) + "W")
+
+    elektromer1.grid_state="A"
+    #elektromer1 = elektromer(20,20,sources, consumers, grid_state)
+
+    print('\n\n')
+    elektromer1.tick()
+
+    print("Active consumers:")
+    for i in consumers:
+        if(i[2]):
+            print(str(i[4]) + " " + str(i[0]) + "W")
 
 
 
-
+    print('\n\n')
 
 
 
