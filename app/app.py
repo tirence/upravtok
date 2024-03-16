@@ -119,16 +119,13 @@ def fetch_data(user_id):
     
     result = []
     date =  request.form['date']
+    user = users_collection.find_one({"_id" : ObjectId(str(user_id))})
     
     for i in range (0, 24):
         result.append(fetch_consumption_by_date_time(date, i))
-    
-    user = users_collection.find_one({"_id" : ObjectId(str(user_id))})
    
     return render_template('admin.html', user_id=user["_id"], name=user["username"], result=result)
 
-        
-    
     
 def fetch_data_by_date_time(date_str, time):
     # Convert date string to datetime object
