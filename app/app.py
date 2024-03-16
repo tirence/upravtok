@@ -39,7 +39,7 @@ def register():
         if users_collection.find_one({'username': username}):
             flash('Username already exists. Choose a different one.', 'danger')
         else:
-            users_collection.insert_one({'username': username, 'password': password, 'node_count' : 0, 'nodes' : []})
+            users_collection.insert_one({'username': username, 'password': password, 'is_admin' : False, 'node_count' : 0, 'nodes' : []})
             flash('Registration successful. You can now log in.', 'success')
             return redirect(url_for('login'))
 
@@ -57,7 +57,11 @@ def login():
         user = users_collection.find_one({'username': username, 'password': password})
         if user:
             flash('Login successful.', 'success')
-            return redirect(url_for('user_view', user_id=user["_id"]))
+            if user["is_admin"]:
+                return redirect(url_for('admin_view', user_id=user["_id"]))
+            else:
+                return redirect(url_for('user_view', user_id=user["_id"]))
+            
             # Add any additional logic, such as session management
         else:
             flash('Invalid username or password. Please try again.', 'danger')
@@ -103,6 +107,29 @@ def add_node(user_id):
             
         return render_template('user.html', user_id=user["_id"], name=user["username"], n=user["node_count"], node_data=user["nodes"])
 
+
+@app.route("/admin")
+def admin_view():
+    user = users_collection.find_one({"_id" : ObjectId(str(request.args['user_id']))})
+    if user:
+        return render_template('admin.html', user_id=user["_id"], name=user["username"])
+
+@app.route("/fetch_data/<user_id>", methods=['POST'])
+def fetch_data(user_id):
+    
+    result = []
+    date =  request.form['date']
+    
+    for i in range (0, 24):
+        result.append(fetch_consumption_by_date_time(date, i))
+    
+    user = users_collection.find_one({"_id" : ObjectId(str(user_id))})
+   
+    return render_template('admin.html', user_id=user["_id"], name=user["username"], result=result)
+
+        
+    
+    
 def fetch_data_by_date_time(date_str, time):
     # Convert date string to datetime object
     date_obj = datetime.strptime(date_str, '%Y-%m-%d')
@@ -132,20 +159,20 @@ def fetch_price_by_date_time(date_str, time):
         return document.get('price')
     return None
 
-#basal usage of the method: http://localhost:5000/fetch_data?date=2024-03-12&time=1
-@app.route('/fetch_data', methods=['GET'])
-def fetch_data():
-    date_str = request.args.get('date')
-    time = int(request.args.get('time'))
+# #basal usage of the method: http://localhost:5000/fetch_data?date=2024-03-12&time=1
+# @app.route('/fetch_data', methods=['GET'])
+# def fetch_data():
+#     date_str = request.args.get('date')
+#     time = int(request.args.get('time'))
 
-    if not date_str or not time:
-        return jsonify({'error': 'Date and time are required parameters'}), 400
+#     if not date_str or not time:
+#         return jsonify({'error': 'Date and time are required parameters'}), 400
 
-    try:
-        data = fetch_data_by_date_time(date_str, time) #exchange func name if other functionality needed here
-        if data:
-            return jsonify(data)
-        else:
-            return jsonify({'error': 'No document found for the specified date and time'}), 404
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+#     try:
+#         data = fetch_data_by_date_time(date_str, time) #exchange func name if other functionality needed here
+#         if data:
+#             return jsonify(data)
+#         else:
+#             return jsonify({'error': 'No document found for the specified date and time'}), 404
+#     except Exception as e:
+#         return jsonify({'error': str(e)}), 500

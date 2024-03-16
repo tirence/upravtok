@@ -1,26 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<meta name="theme-color" content="#195765">
-	<link rel="stylesheet" href="../static/css/main.css">
-	<title>E-TOK</title>
-	<style>
-		@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300;700&display=swap');
-	</style>
-</head>
+{% extends 'layout.html' %}
 
-<body>
-	<header class="header-wrapper">
-	</header>
-	<main class="body-wrapper">
-	</main>
-	<footer class="footer-wrapper">
-	</footer>
+{% block content %}
+<header class="header-wrapper">
+</header>
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-	<script type="text/javascript"></script>
-</body>
-</html
+<main class="body-wrapper text">
+	<h2 class="title">Hello, {{ name }}!</h2>
+
+	<div class="container">
+		<p class="text ">This is the admin panel</p>
+
+		<form class="form" action="{{ url_for('fetch_data', user_id=user_id) }}" method="POST">
+
+			<div id="chart1" class="ct-chart ct-perfect-fourth"></div>
+			<input type="hidden" id="myJinjaVariable" value="{{ result }}">
+
+			<div class="input-wrapper">
+				<label for="date">Enter date to plot graph for:</label>
+				<input type="text" id="date" name="date" required><br><br>
+			</div>
+
+			<div class="button-wrapper">
+				<button type="submit" class="button">
+					<p class="button-text">Fetch data</p>
+				</button>
+			</div>
+		</form>
+	</div>
+
+</main>
+
+
+<footer class="footer-wrapper">
+</footer>
+
+<script>
+	plot()
+	console.log( document.getElementById('myJinjaVariable').value)
+
+	var options = {
+		seriesBarDistance: 15,
+		width: 600,
+		height: 400
+	};
+
+	var data = {
+        labels: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'],
+        series: [document.getElementById('myJinjaVariable').value]
+    };
+
+	console.log(typeof(data.series))
+
+	function plot() {
+		new Chartist.Line('#chart1', data, options);
+	}
+</script>
+
+{% endblock %}
