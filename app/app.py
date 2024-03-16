@@ -1,3 +1,6 @@
+import ast
+import json
+from bson import ObjectId
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
@@ -26,10 +29,6 @@ except Exception as e:
     print(e)
 
 @app.route("/")
-@app.route("/user")
-def user_view():
-    return "Hello, Flask!"
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -40,7 +39,7 @@ def register():
         if users_collection.find_one({'username': username}):
             flash('Username already exists. Choose a different one.', 'danger')
         else:
-            users_collection.insert_one({'username': username, 'password': password})
+            users_collection.insert_one({'username': username, 'password': password, 'node_count' : 0, 'nodes' : []})
             flash('Registration successful. You can now log in.', 'success')
             return redirect(url_for('login'))
 
@@ -58,7 +57,7 @@ def login():
         user = users_collection.find_one({'username': username, 'password': password})
         if user:
             flash('Login successful.', 'success')
-            return redirect(url_for('user_view'))
+            return redirect(url_for('user_view', user_id=user["_id"]))
             # Add any additional logic, such as session management
         else:
             flash('Invalid username or password. Please try again.', 'danger')
@@ -67,6 +66,42 @@ def login():
     else:
         # Render the login form for GET requests
         return render_template('login.html')
+
+@app.route("/user")
+def user_view():
+    user = users_collection.find_one({"_id" : ObjectId(str(request.args['user_id']))})
+   
+    if user:
+        return render_template('user.html', user_id=user["_id"], name=user["username"], n=user["node_count"])
+
+@app.route("/user/configure/<user_id>", methods=['GET'])
+def user_configure(user_id):
+    user = users_collection.find_one({"_id" : ObjectId(str(user_id))})   
+    return render_template('node.html', user_id=user["_id"])
+
+@app.route("/user/add_node/<user_id>", methods=['GET', 'POST'])
+def add_node(user_id):
+    user = users_collection.find_one({"_id" : ObjectId(str(user_id))})
+    if request.method == 'POST':
+        type_name = request.form['type_name']
+        priority = request.form['priority']
+        status = request.form['status']
+        consumption = request.form['consumption']
+        
+        node_data = {
+            'type_name': type_name,
+            'priority': priority,
+            'status': status,
+            'consumption': consumption
+        }
+        
+        if user:
+            # Add the node data to the user's 'nodes' array
+            users_collection.update_one({"_id" : ObjectId(str(user_id))},{'$push': {'nodes': node_data}, '$inc': {'node_count': 1}})
+            user = users_collection.find_one({"_id" : ObjectId(str(user_id))})
+            print(user["node_count"])
+            
+        return render_template('user.html', user_id=user["_id"], name=user["username"], n=user["node_count"], node_data=user["nodes"])
 
 def fetch_data_by_date_time(date_str, time):
     # Convert date string to datetime object
