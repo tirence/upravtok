@@ -109,6 +109,7 @@ if __name__ == "__main__":
             print(str(i[4]) + " " + str(i[0]) + "W")
     elektromer1.grid_state="A"
 
+    input()
     print('\n\n')
 
     #elektromer1 = elektromer(20,20,sources, consumers, grid_state)
@@ -119,12 +120,12 @@ if __name__ == "__main__":
     for i in consumers:
         if(i[2]):
             print(str(i[4]) + " " + str(i[0]) + "W")
-
+    input()
     elektromer1.grid_state="F"
 
     print('\n\n')
     elektromer1.tick()
-    time.sleep(5)
+    
 
 
     print("Active consumers:")
@@ -133,9 +134,10 @@ if __name__ == "__main__":
             print(str(i[4]) + " " + str(i[0]) + "W")
     elektromer1.grid_state="D"
 
+    input()
     print('\n\n')
     elektromer1.tick()
-    time.sleep(5)
+    
 
 
     print("Active consumers:")
@@ -145,7 +147,7 @@ if __name__ == "__main__":
 
     elektromer1.grid_state="A"
     #elektromer1 = elektromer(20,20,sources, consumers, grid_state)
-
+    input()
     print('\n\n')
     elektromer1.tick()
 
